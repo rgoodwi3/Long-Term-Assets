@@ -473,7 +473,7 @@ function span(a,b){return a===b?MON[a]:MON[a]+" through "+MON[b];}
 
 $("biz").innerHTML='<b>Problem Solvers, Inc.</b> is expanding: it buys equipment and a building, develops and buys intangible assets, and acquires a small competitor. Record its long-term assets for '+YEAR+'. Depreciation and amortization are <b>straight-line by whole months</b>, from the month an asset is placed in service through the month it is disposed of.';
 
-// ---------- Chart of accounts (course chart of accounts; listed alphabetically) ----------
+// ---------- Chart of accounts (course chart of accounts; sorted by account number) ----------
 const ACCTS=[
   {id:"ap",no:2000,name:"Accounts Payable",type:"liab",normal:"C",g:"liab"},
   {id:"ar",no:1100,name:"Accounts Receivable",type:"asset",normal:"D",g:"cur"},
@@ -497,7 +497,7 @@ const ACCTS=[
   {id:"tc",no:1630,name:"Trademarks & Copyrights",type:"asset",normal:"D",g:"int"},
   {id:"wage",no:6040,name:"Wages Expense",type:"exp",normal:"D",g:"exp"}
 ];
-const ORDER=ACCTS.slice().sort((x,y)=>x.name.localeCompare(y.name));
+const ORDER=ACCTS.slice().sort((x,y)=>x.no-y.no);
 const A=Object.fromEntries(ACCTS.map(a=>[a.id,a]));
 const GROUPS=[
   {key:"ppe",label:"Property, plant & equipment",note:"Accumulated Depreciation is a contra-asset"},
@@ -1256,7 +1256,7 @@ function radios(name,opts,val,lock,state,label,stack){
   return '<fieldset class="cg'+(state==="ok"?" grp-ok":state==="no"?" grp-no":"")+'"><legend class="sr">'+esc(label)+'</legend><div class="choices'+(stack?" stack":"")+'">'+
     opts.map(o=>'<label class="choice"><input type="radio" name="'+name+'" value="'+esc(o[0])+'"'+(val===o[0]?" checked":"")+(lock?" disabled":"")+'><span>'+esc(o[1])+'</span></label>').join("")+'</div></fieldset>';
 }
-function acctOptions(sel){return '<option value="">Choose an account…</option>'+ORDER.map(a=>'<option value="'+a.id+'"'+(sel===a.id?" selected":"")+'>'+esc(a.name)+'</option>').join("");}
+function acctOptions(sel){return '<option value="">Choose an account…</option>'+ORDER.map(a=>'<option value="'+a.id+'"'+(sel===a.id?" selected":"")+'>'+a.no+' '+esc(a.name)+'</option>').join("");}
 function controls(primary){
   let nav;
   if(graded())nav='<button class="btn small" data-act="exitGraded" title="Your graded attempt is saved to your account, and you can come back to it. The clock keeps running.">Exit to practice</button>';
